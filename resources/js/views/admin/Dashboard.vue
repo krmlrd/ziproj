@@ -1,9 +1,11 @@
 <template>
     <div class="container">
-        <div class="card card-default">
-            <div class="card-header">Admin Dashboard</div>
-            <div class="card-body">
-                Welcome to your administrator dashboard
+        <div class="row">
+            <div class="col-md-6">
+                <create-post />
+            </div>
+            <div class="col-md-6 posts-container" style="height: 35rem; overflow-y: auto">
+                <all-posts />
             </div>
         </div>
     </div>

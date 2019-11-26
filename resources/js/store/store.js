@@ -8,6 +8,7 @@ export const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('access_token') || null,
     refresh_token: localStorage.getItem('refresh_token') || null,
+    posts: [],
   },
   getters: {
     loggedIn(state) {
@@ -23,15 +24,47 @@ export const store = new Vuex.Store({
       state.token = null
       state.refresh_token = null
     },
+    setPosts(state, response) {
+      state.posts = response
+    },
   },
   actions: {
     register(context, data) {
       return new Promise((resolve, reject) => {
-        axios.post('/register', {
+        axios.post('/auth/register', {
           name: data.name,
           email: data.email,
           password: data.password,
           password_confirmation: data.password_confirmation,
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getAllPosts(context) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      return new Promise((resolve, reject) => {
+        axios.get('/post/get_all')
+          .then(response => {
+            context.commit('setPosts', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    deletePost(context, params) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      return new Promise((resolve, reject) => {
+        axios.post('/post/delete', {
+            id: params.id,
         })
           .then(response => {
             resolve(response)
@@ -46,7 +79,7 @@ export const store = new Vuex.Store({
 
       if (context.getters.loggedIn) {
         return new Promise((resolve, reject) => {
-          axios.post('/logout')
+          axios.post('/auth/logout')
             .then(response => {
               localStorage.removeItem('access_token')
               localStorage.removeItem('refresh_token')
@@ -64,7 +97,7 @@ export const store = new Vuex.Store({
     },
     retrieveToken(context, credentials) {
       return new Promise((resolve, reject) => {
-        axios.post('/login', {
+        axios.post('/auth/login', {
           email: credentials.email,
           password: credentials.password,
         })
@@ -84,7 +117,7 @@ export const store = new Vuex.Store({
             console.log(error)
             reject(error)
           })
-        })
+      })
     },
   }
 })

@@ -7,10 +7,13 @@ import './bootstrap'
 import Index from './Index'
 import routes from '@/js/routes.js';
 import { store } from './store/store'
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 
 window.eventBus = new Vue()
 
 Vue.use(Vuetify)
+Vue.use(ElementUI)
 
 Vue.component(
     'passport-clients',
@@ -25,6 +28,16 @@ Vue.component(
 Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue').default
+)
+
+Vue.component(
+    'create-post',
+    require('./components/dashboard/CreatePost.vue').default
+)
+
+Vue.component(
+    'all-posts',
+    require('./components/dashboard/AllPosts.vue').default
 )
 
 Vue.use(VueRouter)
@@ -57,7 +70,7 @@ router.beforeEach((to, from, next) => {
 })
 
 Vue.axios = axios
-axios.defaults.baseURL = `/api/auth`
+axios.defaults.baseURL = `/api`
 
 const vuetifyOptions = {}
 
