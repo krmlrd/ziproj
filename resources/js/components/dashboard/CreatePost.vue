@@ -1,22 +1,29 @@
 <template>
-  <div class="card mt-4">
-      <div class="card-header">New Post</div>
-      <div class="card-body">
+  <v-card
+    class="mx-auto"
+  >
+      <v-card-title>New Post</v-card-title>
+      <v-card-subtitle>
         <div v-if=status_msg :class="{'alert-success': status, 'alert-danger': !status }" class="alert" role="alert">
           {{ status_msg }}
         </div>
-        <form>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Title</label>
-            <input v-model="title" type="text" class="form-control" id="title" placeholder="Post Title" required>
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlTextarea1">Post Content</label>
-            <textarea v-model="body" class="form-control" id="post-content" rows="3" required></textarea>
-          </div>
+      </v-card-subtitle>
+        <v-form>
+          <v-text-field
+            prepend-icon="title"
+            v-model="title"
+            label="Title"
+            required
+          ></v-text-field>
+          <v-textarea
+            prepend-icon="short_text"
+            v-model="body"
+            label="Post Content"
+            required
+          ></v-textarea>
           <div class="">
             <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action = ""
               list-type="picture-card"
               :on-preview="handlePictureCardPreview"
               :on-change="updateImageList"
@@ -27,40 +34,18 @@
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
           </div>
-        </form>
-      </div>
-      <div class="card-footer">
-        <button type="button" @click="createPost" class="btn btn-success">
-          {{ isCreatingPost ? 'Posting...' : 'Create Post' }}
-        </button>
-      </div>
-  </div>
+        </v-form>
+      <v-card-actions>
+        <v-btn
+          class="mr-4"
+          color="primary"
+          @click="createPost"
+        >Create Post</v-btn>
+      </v-card-actions>
+  </v-card>
 </template>
 
 <style>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
 </style>
 
 <script>
@@ -111,7 +96,7 @@ export default {
         .then((res) => {
           this.title = this.body = '';
           this.status = true;
-          this.showNotificaiton('Post Successfully Created');
+          this.showNotification('Post Successfully Created');
           this.isCreatingPost = false;
           this.$store.dispatch('getAllPosts')
         });
@@ -119,7 +104,7 @@ export default {
     validateForm() {
       if (!this.title) {
         this.status = false;
-        this.showNotificaiton('Post title cannot be empty');
+        this.showNotification('Post title cannot be empty');
         return false;
       }
       if (!this.body) {
@@ -129,7 +114,7 @@ export default {
       }
       return true;
     },
-    showNotificaiton(message) {
+    showNotification(message) {
       this.status_msg = message;
       setTimeout(() => {
         this.status_msg = '';

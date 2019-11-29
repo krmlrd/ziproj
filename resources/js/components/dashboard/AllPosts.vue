@@ -1,25 +1,46 @@
 <template>
-  <div class="row">
-    <div class="col-md-6" v-for="(post, i) in posts" :key=i>
-      <div class="card mt-4">
-        <img v-if="post.images.length" class="card-img-top" :src="post.images[0].image_path">
-        <div class="card-body">
-          <p class="card-text"><strong>{{ post.title }}</strong> <br>
-            {{ truncateText(post.body) }}
-          </p>
+  <v-row>
+    <v-col
+      v-for="(post, i) in posts"
+      :key="i"
+      md="6"
+    >
+      <v-card
+        class="mx-auto"
+      >
+        <div v-if="post.images[0]">
+        <v-img
+          :src="post.images[0].image_path"
+          height="200px"
+        ></v-img>
         </div>
-        <div class="card-footer">
-          <button class="btn btn-success m-2" @click="viewPost(i)">View</button>
-          <button class="btn btn-danger m-2" @click="deletePost(i)">Delete</button>
-        </div>
-      </div>
-    </div>
+        <v-card-title>
+          {{ post.title }}
+        </v-card-title>
+        <v-card-subtitle>
+           {{ truncateText(post.body) }}
+        </v-card-subtitle>
+        <v-card-actions>
+          <v-btn
+            color="primary"
+            @click="viewPost(i)"
+          >View</v-btn>
+          <v-btn
+            color="error"
+            @click="deletePost(i)"
+          >Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
     <el-dialog v-if="currentPost" :visible.sync="postDialogVisible" width="40%">
       <span>
         <h3>{{ currentPost.title }}</h3>
         <div class="row">
           <div class="col-md-6" v-for="(img, i) in currentPost.images" :key=i>
-            <img :src="img.image_path" class="img-thumbnail" alt="">
+            <v-img
+              :src="img.image_path"
+              class="img-thumbnail"
+            ></v-img>
           </div>
         </div>
         <hr>
@@ -29,14 +50,8 @@
         <el-button type="primary" @click="postDialogVisible = false">Okay</el-button>
       </span>
     </el-dialog>
-  </div>
+  </v-row>
 </template>
-
-<style>
-  .card-footer button.btn-danger {
-    float: right
-  }
-</style>
 
 <script>
 import { mapState } from 'vuex';

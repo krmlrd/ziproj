@@ -1,11 +1,14 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-import Login from '@/js/views/Login';
-import Logout from '@/js/views/Logout';
-import Register from '@/js/views/Register';
+import Login from '@/js/views/Login'
+import Logout from '@/js/views/Logout'
+import Register from '@/js/views/Register'
+import Home from '@/js/components/Home'
 import AdminDashboard from '@/js/views/admin/Dashboard'
-import Home from '@/js/components/Home';
+import AdminHome from '@/js/views/admin/Home'
+import AdminImages from '@/js/views/admin/Images'
+import AdminPosts from '@/js/views/admin/Posts'
 
 Vue.use(VueRouter);
 
@@ -45,7 +48,21 @@ const routes = [
     component: AdminDashboard,
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: '',
+        component: AdminHome
+      },
+      {
+        path: 'images',
+        component: AdminImages
+      },
+      {
+        path: 'posts',
+        component: AdminPosts
+      }
+    ]
   },
 ]
 

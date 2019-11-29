@@ -1,14 +1,14 @@
 <template>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <create-post />
-            </div>
-            <div class="col-md-6 posts-container" style="height: 35rem; overflow-y: auto">
-                <all-posts />
-            </div>
-        </div>
-    </div>
+  <v-container fluid>
+      <v-layout row>
+          <v-col cols="2">
+              <admin-navbar />
+          </v-col>
+          <v-col cols="10">
+            <router-view></router-view>
+          </v-col>
+      </v-layout>
+  </v-container>
 </template>
 <script>
   export default {

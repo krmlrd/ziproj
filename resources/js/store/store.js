@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
     token: localStorage.getItem('access_token') || null,
     refresh_token: localStorage.getItem('refresh_token') || null,
     posts: [],
+    images: [],
   },
   getters: {
     loggedIn(state) {
@@ -26,6 +27,9 @@ export const store = new Vuex.Store({
     },
     setPosts(state, response) {
       state.posts = response
+    },
+    setImages(state, response) {
+      state.images = response
     },
   },
   actions: {
@@ -59,11 +63,38 @@ export const store = new Vuex.Store({
           })
       })
     },
+    getAllImages(context) {
+      return new Promise((resolve, reject) => {
+        axios.get('/image/get_all')
+          .then(response => {
+            context.commit('setImages', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     deletePost(context, params) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
       return new Promise((resolve, reject) => {
         axios.post('/post/delete', {
+            id: params.id,
+        })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    deleteImage(context, params) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+
+      return new Promise((resolve, reject) => {
+        axios.post('/image/delete', {
             id: params.id,
         })
           .then(response => {

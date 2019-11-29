@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
-      <div class="card card-default">
-          <div class="card-header">Home page</div>
-          <div class="card-body">
+  <v-container>
+      <v-card
+        class="mx-auto"
+      >
+          <v-card-title>Home page</v-card-title>
+          <v-card-text>
               Welcome to your home page
-          </div>
-      </div>
-  </div>
+          </v-card-text>
+      </v-card>
+  </v-container>
 </template>

@@ -1,38 +1,46 @@
 <template>
-    <div class="container">
-        <div class="card card-default">
-            <div class="card-header">Registration</div>
-            <div class="card-body">
+  <v-container>
+      <v-card
+        class="mx-auto"
+      >
+            <v-card-title>Registration</v-card-title>
               <div v-if="serverErrors" class="server-error">
                 <div v-for="(value, key) in serverErrors" :key="key">
                   {{ value[0] }}
                 </div>
               </div>
-                <form autocomplete="off" @submit.prevent="register" method="post">
-                    <div class="form-group" v-bind:class="{ 'input-error': serverErrors && serverErrors.name }">
-                        <label for="name">Name</label>
-                        <input type="name" id="name" class="form-control" placeholder="user" v-model="name">
-                        <span class="help-block">{{ serverErrors.name }}</span>
-                    </div>
-                    <div class="form-group" v-bind:class="{ 'input-error': serverErrors && serverErrors.email }">
-                        <label for="email">E-mail</label>
-                        <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email">
-                        <span class="help-block">{{ serverErrors.email }}</span>
-                    </div>
-                    <div class="form-group" :class="{ 'input-error': serverErrors && serverErrors.password }">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" class="form-control" v-model="password">
-                        <span class="help-block">{{ serverErrors.password }}</span>
-                    </div>
-                    <div class="form-group" v-bind:class="{ 'input-error': serverErrors && serverErrors.password }">
-                        <label for="password_confirmation">Password confirmation</label>
-                        <input type="password" id="password_confirmation" class="form-control" v-model="password_confirmation">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Registration</button>
-                </form>
+              <v-form>
+                  <v-text-field
+                    prepend-icon="person"
+                    v-model="name"
+                    label="Name"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="person"
+                    v-model="email"
+                    label="E-mail"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="person"
+                    v-model="password"
+                    label="Password"
+                    required
+                  ></v-text-field>
+                  <v-text-field
+                    prepend-icon="person"
+                    v-model="password_confirmation"
+                    label="Password confirmation"
+                    required
+                  ></v-text-field>
+                  <v-card-actions>
+                    <v-btn class="mr-4" @click="register">Registration</v-btn>
+                  </v-card-actions>
+              </v-form>
             </div>
-        </div>
-    </div>
+        </v-card>
+    </v-container>
 </template>
 <script>
   export default {

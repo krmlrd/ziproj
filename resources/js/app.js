@@ -40,6 +40,21 @@ Vue.component(
     require('./components/dashboard/AllPosts.vue').default
 )
 
+Vue.component(
+    'upload-images',
+    require('./components/dashboard/UploadImages.vue').default
+)
+
+Vue.component(
+    'all-images',
+    require('./components/dashboard/AllImages.vue').default
+)
+
+Vue.component(
+    'admin-navbar',
+    require('./components/dashboard/Navbar.vue').default
+)
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({

@@ -2,8 +2,12 @@
 /public/hot
 /public/storage
 /public/uploads
+/public/images
+/public/css
+/public/js
 /public/fonts
 /storage/*.key
+/storage/uploads
 /vendor
 .env
 .env.backup

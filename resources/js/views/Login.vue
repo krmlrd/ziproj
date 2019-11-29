@@ -1,26 +1,30 @@
 <template>
-    <div class="container">
-        <div class="card card-default">
-            <div class="card-header">Log in</div>
-            <div class="card-body">
-                <form autocomplete="off" @submit.prevent="login" method="post">
-                  <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-                  <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
-                  <div class="form-group">
-                      <label for="email">E-mail</label>
-                      <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="email" required>
-                  </div>
-                  <div class="form-group">
-                      <label for="password">Password</label>
-                      <input type="password" id="password" class="form-control" v-model="password" required>
-                  </div>
-                  <button type="submit" class="btn btn-primary">
-                    Enter
-                  </button>
-              </form>
-            </div>
-        </div>
-    </div>
+    <v-container>
+        <v-card
+          class="mx-auto"
+        >
+            <v-card-title>Log in</v-card-title>
+            <v-form>
+              <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+              <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+              <v-text-field
+                prepend-icon="person"
+                v-model="email"
+                label="email"
+                required
+              ></v-text-field>
+              <v-text-field
+                prepend-icon="lock"
+                v-model="password"
+                label="password"
+                required
+              ></v-text-field>
+              <v-card-actions>
+                <v-btn class="mr-4" @click="login">Login</v-btn>
+              </v-card-actions>
+            </v-form>
+        </v-card>
+    </v-container>
 </template>
 <script>
   export default {

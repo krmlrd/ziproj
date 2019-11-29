@@ -21,6 +21,15 @@ Route::prefix('post')->group(function () {
     Route::get('get_all', 'PostController@getAllPosts');
 });
 
+Route::prefix('image')->group(function () {
+    Route::group(['middleware' => 'auth:api'], function(){
+        Route::post('create', 'ImageController@createImage');
+        Route::post('delete', 'ImageController@deleteImage');
+    });
+
+    Route::get('get_all', 'ImageController@getAllImages');
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
