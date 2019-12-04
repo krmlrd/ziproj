@@ -6,7 +6,6 @@ import Logout from '@/js/views/Logout'
 import Register from '@/js/views/Register'
 import Home from '@/js/components/Home'
 import AdminDashboard from '@/js/views/admin/Dashboard'
-import AdminHome from '@/js/views/admin/Home'
 import AdminImages from '@/js/views/admin/Images'
 import AdminPosts from '@/js/views/admin/Posts'
 
@@ -50,10 +49,6 @@ const routes = [
       requiresAuth: true
     },
     children: [
-      {
-        path: '',
-        component: AdminHome
-      },
       {
         path: 'images',
         component: AdminImages

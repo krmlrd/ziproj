@@ -32,7 +32,7 @@
         </v-card-actions>
       </v-card>
     </v-col>
-    <el-dialog v-if="currentPost" :visible.sync="postDialogVisible" width="40%">
+    <!-- <el-dialog v-if="currentPost" :visible.sync="postDialogVisible" width="40%">
       <span>
         <h3>{{ currentPost.title }}</h3>
         <div class="row">
@@ -49,7 +49,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="postDialogVisible = false">Okay</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </v-row>
 </template>
 

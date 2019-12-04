@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use Storage;
+use Auth;
 
 use Illuminate\Http\Request;
 
@@ -19,13 +20,11 @@ class ImageController extends Controller
     public function createImage(Request $request)
     {
         $user = Auth::user();
-        $title = $request->title;
         $images = $request->images;
 
         foreach($images as $image) {
-            $imagePath = Storage::disk('uploads')->put($user->id . '/images/' . $image);
+            $imagePath = Storage::disk('uploads')->put($user->id . '/images/', $image);
             Image::create([
-                'image_caption' => $title,
                 'image_path' => '/uploads/' . $imagePath,
                 'user_id' => $user->id,
             ]);
@@ -39,9 +38,9 @@ class ImageController extends Controller
         $user = Auth::user();
         $imageId = $request->id;
 
-        $post = Image::find($imageId);
-        if ($imageId) {
-          $imageId->delete();
+        $image = Image::find($imageId);
+        if ($image) {
+          $image->delete();
 
           return response()->noContent();
         } else {

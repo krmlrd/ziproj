@@ -7,13 +7,12 @@ import './bootstrap'
 import Index from './Index'
 import routes from '@/js/routes.js';
 import { store } from './store/store'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
+import Vuelidate from 'vuelidate'
 
 window.eventBus = new Vue()
 
 Vue.use(Vuetify)
-Vue.use(ElementUI)
+Vue.use(Vuelidate)
 
 Vue.component(
     'passport-clients',

@@ -17,19 +17,19 @@
                     required
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="person"
+                    prepend-icon="email"
                     v-model="email"
                     label="E-mail"
                     required
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="person"
+                    prepend-icon="lock"
                     v-model="password"
                     label="Password"
                     required
                   ></v-text-field>
                   <v-text-field
-                    prepend-icon="person"
+                    prepend-icon="lock"
                     v-model="password_confirmation"
                     label="Password confirmation"
                     required

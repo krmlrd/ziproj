@@ -47,7 +47,7 @@ export default {
       const image = this.images[imageIndex];
       if(confirm("Do you really want to delete?")) {
         this.$store.dispatch('deleteImage', {
-          id: post.id,
+          id: image.id,
         }).then(() => {
           this.$store.dispatch('getAllImages');
         });

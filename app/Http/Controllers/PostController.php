@@ -31,13 +31,13 @@ class PostController extends Controller
         ]);
 
         foreach($images as $image) {
-            // $imagePath = Storage::disk('uploads')->put($user->id . '/posts/' . $post->id, $image);
-            // Image::create([
-            //     'image_caption' => $title,
-            //     'image_path' => '/uploads/' . $imagePath,
-            //     'user_id' => $user->id,
-            //     'post_id' => $post->id,
-            // ]);
+            $imagePath = Storage::disk('uploads')->put($user->id . '/images/', $image);
+            Image::create([
+                'image_caption' => $title,
+                'image_path' => '/uploads/' . $imagePath,
+                'user_id' => $user->id,
+                'post_id' => $post->id,
+            ]);
         }
 
         return response()->json(['success' => true, 'data' => $post]);

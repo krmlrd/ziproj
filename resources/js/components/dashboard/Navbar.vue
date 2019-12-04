@@ -2,23 +2,21 @@
   <div>
   <v-card
     height="400"
-    width="256"
+    max-width="256"
     class="mx-auto"
   >
-    <v-navigation-drawer permanent>
+    <v-navigation-drawer
+      permanent
+      :mini-variant="mini"
+    >
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
-            Admin dashboard
+            Z
           </v-list-item-title>
-          <v-list-item-subtitle>
-            choose sub-category
-          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
-
       <v-divider></v-divider>
-
       <v-list
         dense
         nav
@@ -54,5 +52,10 @@
         right: null,
       }
     },
+    computed: {
+      mini() {
+        return this.$vuetify.breakpoint.mdAndDown;
+      }
+    }
   }
 </script>

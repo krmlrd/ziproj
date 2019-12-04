@@ -3,18 +3,23 @@
     class="mx-auto"
   >
       <v-card-title>Upload Images</v-card-title>
-      <v-card-subtitle>
-        <div v-if=status_msg :class="{'alert-success': status, 'alert-danger': !status }" class="alert" role="alert">
-          {{ status_msg }}
-        </div>
-      </v-card-subtitle>
+      <v-file-input
+        small-chips
+        multiple
+        label="Select images"
+        prepend-icon="mdi-camera"
+        v-model="images"
+        :error-messages="imagesErrors"
+        @input="$v.images.$touch()"
+        @blur="$v.images.$touch()"
+      ></v-file-input>
 
       <v-card-actions>
         <v-btn
           class="mr-4"
           color="primary"
           @click="uploadImages"
-        >Upload Images</v-btn>
+        >Upload</v-btn>
       </v-card-actions>
   </v-card>
 </template>
@@ -23,59 +28,51 @@
 </style>
 
 <script>
-import { setTimeout } from 'timers';
 import { mapState, mapActions } from 'vuex';
+import { required } from 'vuelidate/lib/validators';
 export default {
   name: 'upload-images',
-  props: ['images'],
+  props: ['uploads'],
   data() {
     return {
-      imageList: [],
+      images: [],
       status_msg: '',
       status: '',
       title: '',
     };
   },
-  // computed: {
-  //   ...mapActions(['getAllPosts']),
-  // },
+  computed: {
+    imagesErrors () {
+      const errors = []
+      if (!this.$v.images.$dirty) return errors
+      !this.$v.images.required && errors.push('Images are required!')
+      return errors
+    },
+  },
+  validations: {
+    images: { required },
+  },
   mounted() {
   },
   methods: {
-    updateImageList(file) {
-      this.imageList.push(file.raw);
-    },
     uploadImages(e) {
       e.preventDefault();
-      if (!this.validateForm()) {
-        return false;
-      }
-      // let formData = new FormData();
-      // formData.append('title', this.title);
-      // $.each(this.imageList, function(key, image) {
-      //   formData.append(`images[${key}]`, image);
-      // });
-      // axios.post('/image/create', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-      //   .then((res) => {
-      //     this.title = this.body = '';
-      //     this.status = true;
-      //     this.showNotification('Images Successfully Uploaded');
-      //     this.$store.dispatch('getAllImages')
-      //   });
+      this.$v.$touch()
+      if (this.$v.$pending || this.$v.$error) return
+      let formData = new FormData()
+      this.images.forEach(function(image, key){
+        formData.append(`images[${key}]`, image)
+      })
+
+      this.$store.dispatch('uploadImages', formData)
+        .then(response => {
+          console.log(response)
+          this.$store.dispatch('getAllImages')
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    validateForm() {
-      if (!this.images) {
-        this.status = false;
-        this.showNotification('Images cannot be empty!');
-        return false;
-      }
-    },
-    showNotification(message) {
-      this.status_msg = message;
-      setTimeout(() => {
-        this.status_msg = '';
-      }, 3000);
-    }
   },
 };
 </script>

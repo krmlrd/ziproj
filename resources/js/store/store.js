@@ -49,6 +49,20 @@ export const store = new Vuex.Store({
           })
       })
     },
+    createPost(context, formData) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers.common['Content-Type'] = 'multipart/form-data'
+
+      return new Promise((resolve, reject) => {
+        axios.post('/post/create', formData)
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     getAllPosts(context) {
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
 
@@ -68,6 +82,20 @@ export const store = new Vuex.Store({
         axios.get('/image/get_all')
           .then(response => {
             context.commit('setImages', response.data.data)
+            resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    uploadImages(context, formData) {
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + context.state.token
+      axios.defaults.headers.common['Content-Type'] = 'multipart/form-data'
+
+      return new Promise((resolve, reject) => {
+        axios.post('/image/create', formData)
+          .then(response => {
             resolve(response)
           })
           .catch(error => {

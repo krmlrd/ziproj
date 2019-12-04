@@ -3,37 +3,35 @@
     class="mx-auto"
   >
       <v-card-title>New Post</v-card-title>
-      <v-card-subtitle>
-        <div v-if=status_msg :class="{'alert-success': status, 'alert-danger': !status }" class="alert" role="alert">
-          {{ status_msg }}
-        </div>
-      </v-card-subtitle>
         <v-form>
           <v-text-field
             prepend-icon="title"
             v-model="title"
             label="Title"
             required
+            :error-messages="titleErrors"
+            @input="$v.title.$touch()"
+            @blur="$v.title.$touch()"
           ></v-text-field>
           <v-textarea
             prepend-icon="short_text"
             v-model="body"
             label="Post Content"
             required
+            :error-messages="bodyErrors"
+            @input="$v.body.$touch()"
+            @blur="$v.body.$touch()"
           ></v-textarea>
-          <div class="">
-            <el-upload
-              action = ""
-              list-type="picture-card"
-              :on-preview="handlePictureCardPreview"
-              :on-change="updateImageList"
-              :auto-upload="false">
-              <i class="el-icon-plus"></i>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
-          </div>
+          <v-file-input
+            small-chips
+            multiple
+            label="Select images"
+            prepend-icon="mdi-camera"
+            v-model="images"
+            :error-messages="imagesErrors"
+            @input="$v.images.$touch()"
+            @blur="$v.images.$touch()"
+          ></v-file-input>
         </v-form>
       <v-card-actions>
         <v-btn
@@ -49,8 +47,8 @@
 </style>
 
 <script>
-import { setTimeout } from 'timers';
 import { mapState, mapActions } from 'vuex';
+import { required } from 'vuelidate/lib/validators';
 export default {
   name: 'create-post',
   props: ['posts'],
@@ -58,7 +56,7 @@ export default {
     return {
       dialogImageUrl: '',
       dialogVisible: false,
-      imageList: [],
+      images: [],
       status_msg: '',
       status: '',
       isCreatingPost: false,
@@ -66,60 +64,58 @@ export default {
       body: '',
     };
   },
-  // computed: {
-  //   ...mapActions(['getAllPosts']),
-  // },
+  computed: {
+    titleErrors () {
+      const errors = []
+      if (!this.$v.title.$dirty) return errors
+      !this.$v.title.required && errors.push('Title is required!')
+      return errors
+    },
+    bodyErrors () {
+      const errors = []
+      if (!this.$v.body.$dirty) return errors
+      !this.$v.body.required && errors.push('Body is required!')
+      return errors
+    },
+    imagesErrors () {
+      const errors = []
+      if (!this.$v.images.$dirty) return errors
+      !this.$v.images.required && errors.push('Images are required!')
+      return errors
+    },
+  },
+  validations: {
+    title: { required },
+    body: { required },
+    images: { required },
+  },
   mounted() {
   },
   methods: {
-    updateImageList(file) {
-      this.imageList.push(file.raw);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.imageList.push(file);
-      this.dialogVisible = true;
-    },
     createPost(e) {
       e.preventDefault();
-      if (!this.validateForm()) {
-        return false;
-      }
+      this.$v.$touch()
+      if (this.$v.$pending || this.$v.$error) return
       this.isCreatingPost = true;
       let formData = new FormData();
       formData.append('title', this.title);
       formData.append('body', this.body);
-      $.each(this.imageList, function(key, image) {
-        formData.append(`images[${key}]`, image);
-      });
-      axios.post('/post/create', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-        .then((res) => {
+      this.images.forEach(function(image, key){
+        formData.append(`images[${key}]`, image)
+      })
+
+      this.$store.dispatch('createPost', formData)
+        .then(response => {
+          console.log(response)
           this.title = this.body = '';
           this.status = true;
-          this.showNotification('Post Successfully Created');
           this.isCreatingPost = false;
           this.$store.dispatch('getAllPosts')
-        });
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
-    validateForm() {
-      if (!this.title) {
-        this.status = false;
-        this.showNotification('Post title cannot be empty');
-        return false;
-      }
-      if (!this.body) {
-        this.status = false;
-        this.showNotification('Post body cannot be empty');
-        return false;
-      }
-      return true;
-    },
-    showNotification(message) {
-      this.status_msg = message;
-      setTimeout(() => {
-        this.status_msg = '';
-      }, 3000);
-    }
   },
 };
 </script>
