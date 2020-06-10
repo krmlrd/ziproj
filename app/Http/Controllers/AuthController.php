@@ -77,7 +77,6 @@ class AuthController extends Controller
                   'refresh_token' => $responseBody['refresh_token'],
               ], 200)->header('Authorization', $responseBody['access_token']);
       } catch (\GuzzleHttp\Exception\BadResponseException $e) {
-        return response()->json(['message' => $e->getMessage()], $e->getCode());
           if ($e->getCode() === 400) {
               return response()->json('Invalid Request. Please enter a username or a password.', $e->getCode());
           } else if ($e->getCode() === 401) {
